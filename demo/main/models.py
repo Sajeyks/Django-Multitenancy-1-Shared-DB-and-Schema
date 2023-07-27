@@ -3,11 +3,6 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 # Create your models here.
 
-domain_validator = RegexValidator(
-    r'^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-    'Enter a valid domain name.'
-)
-
 subdomain_validator = RegexValidator(
     r'^[a-zA-Z0-9-]+$',
     'Enter a valid subdomain name.'
@@ -15,16 +10,7 @@ subdomain_validator = RegexValidator(
 
 class Tenant(models.Model):
     name = models.CharField(max_length=100)
-    subdomain_prefix = models.CharField(
-        max_length=100, unique=True, null=True, validators=[subdomain_validator]
-    )
-    custom_domain = models.CharField(
-        max_length=100, unique=True, null=True, validators=[domain_validator]
-    )
-
-    def clean(self):
-        if not self.subdomain_prefix and not self.custom_domain:
-            raise ValidationError('Either subdomain prefix or custom domain must be provided.')
+    subdomain_prefix = models.CharField(max_length=100, unique=True, validators=[subdomain_validator])
 
 
 class TenantAwareModel(models.Model):
