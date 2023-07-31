@@ -15,7 +15,7 @@ def create_default_tenant(sender, **kwargs):
     updated_hostname = f"main.{vm_url_without_https}"
     
     # Update /etc/hosts to replace 'localhost' with 'main'
-    update_host_command = f"sudo sed -i '/^127.0.0.1/s/$/ {updated_hostname}/' /etc/hosts"
+    update_host_command = f"sudo sed -i '/^172.17.0.2/s/$/ {updated_hostname}/' /etc/hosts"
     subprocess.run(update_host_command, shell=True)
 
     # Update ALLOWED_HOSTS setting in settings.py
@@ -29,7 +29,7 @@ def add_tenant_to_hosts(sender, instance, created, **kwargs):
         updated_hostname = f"{instance.subdomain_prefix}.main.{vm_url_without_https}"
         
         # Update /etc/hosts to add the new tenant's domain or subdomain
-        add_command = f"echo '127.0.0.1 {updated_hostname}' | sudo tee -a /etc/hosts"
+        add_command = f"echo '172.17.0.2 {updated_hostname}' | sudo tee -a /etc/hosts"
         subprocess.run(add_command, shell=True)
 
         # Update ALLOWED_HOSTS setting in settings.py
