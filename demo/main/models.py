@@ -3,38 +3,27 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 # Create your models here.
 
-domain_validator = RegexValidator(
-    r'^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-    'Enter a valid domain name.'
-)
-
 subdomain_validator = RegexValidator(
     r'^[a-zA-Z0-9-]+$',
     'Enter a valid subdomain name.'
 )
 
 class Tenant(models.Model):
-    name = models.CharField(max_length=100)
-    subdomain_prefix = models.CharField(
-        max_length=100, unique=True, null=True, validators=[subdomain_validator]
-    )
-    custom_domain = models.CharField(
-        max_length=100, unique=True, null=True, validators=[domain_validator]
-    )
-
-    def clean(self):
-        if not self.subdomain_prefix and not self.custom_domain:
-            raise ValidationError('Either subdomain prefix or custom domain must be provided.')
+    name = models.CharField(max_length=100, unique=True)
+    subdomain_prefix = models.CharField(max_length=100, unique=True, validators=[subdomain_validator])
+    
+    def __str__(self):
+        return self.name
 
 
-class TenantAwareModel(models.Model):
+class TenantCentricModel(models.Model):
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
 
 
-class customer(models.Model):
+class customer(TenantCentricModel):
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     
@@ -49,7 +38,7 @@ CHOICES_1 = (
         ("maintainance", 'Maintainance'),
     )
 
-class rocket(models.Model):
+class rocket(TenantCentricModel):
     name = models.CharField(max_length=255, unique=True)
     edition = models.CharField(max_length=255)
     stage = models.CharField(max_length=255, choices=CHOICES_1)
@@ -66,7 +55,7 @@ CHOICES_2 = (
         ("failed", 'Failed'),
     )
 
-class launch(models.Model):
+class launch(TenantCentricModel):
     rockets = models.ManyToManyField(rocket, blank=True)
     launch_time = models.DateTimeField()
     status = models.CharField(max_length=255, choices=CHOICES_2)
@@ -74,7 +63,7 @@ class launch(models.Model):
     class  Meta:
         verbose_name_plural  =  "Launches"
 
-class payload(models.Model):
+class payload(TenantCentricModel):
     name = models.CharField(max_length=255, unique=True)
     weight = models.FloatField(help_text="in Tonnes")
     owner = models.ForeignKey(customer, on_delete = models.CASCADE)
