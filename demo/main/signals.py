@@ -8,14 +8,14 @@ from django.conf import settings
 @receiver(post_migrate)
 def create_default_tenant(sender, **kwargs):
     # Create the default 'main' tenant on startup if it doesn't exist
-    default_tenant, _ = Tenant.objects.get_or_create(name='main', subdomain_prefix='')
+    default_tenant, _ = Tenant.objects.get_or_create(name='main', subdomain_prefix='main')
     default_tenant.save()
 
     vm_url_without_https = '{{EDUCATIVE_LIVE_VM_URL}}'.replace('https://', '')
     updated_hostname = f"main.{vm_url_without_https}"
     
     # Update /etc/hosts to replace 'localhost' with 'main'
-    update_host_command = f"sudo sed -i '/^172.17.0.2/s/$/ {updated_hostname}/' /etc/hosts"
+    update_host_command = f"echo '172.17.0.2 {updated_hostname}' | sudo tee -a /etc/hosts"
     subprocess.run(update_host_command, shell=True)
 
     # Update ALLOWED_HOSTS setting in settings.py
