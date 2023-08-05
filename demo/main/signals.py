@@ -18,8 +18,6 @@ def create_default_tenant(sender, **kwargs):
     update_host_command = f"echo '172.17.0.2 {updated_hostname}' | sudo tee -a /etc/hosts"
     subprocess.run(update_host_command, shell=True)
 
-    # Update ALLOWED_HOSTS setting in settings.py
-    settings.ALLOWED_HOSTS.append(f"{updated_hostname}")
 
 @receiver(post_save, sender=Tenant)
 def add_tenant_to_hosts(sender, instance, created, **kwargs):
@@ -32,9 +30,6 @@ def add_tenant_to_hosts(sender, instance, created, **kwargs):
         add_command = f"echo '172.17.0.2 {updated_hostname}' | sudo tee -a /etc/hosts"
         subprocess.run(add_command, shell=True)
 
-        # Update ALLOWED_HOSTS setting in settings.py
-        settings.ALLOWED_HOSTS.append(f"{updated_hostname}")
-
 
 @receiver(pre_delete, sender=Tenant)
 def delete_tenant_from_hosts(sender, instance, **kwargs):
@@ -46,7 +41,4 @@ def delete_tenant_from_hosts(sender, instance, **kwargs):
         # Update /etc/hosts to delete the tenant's domain or subdomain
         delete_command = f"sudo sed -i '/{updated_hostname}/d' /etc/hosts"
         subprocess.run(delete_command, shell=True)
-
-        # Update ALLOWED_HOSTS setting in settings.py
-        settings.ALLOWED_HOSTS.remove(f"{updated_hostname}")
 
