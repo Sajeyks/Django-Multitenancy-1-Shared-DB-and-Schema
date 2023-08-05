@@ -26,7 +26,7 @@ def add_tenant_to_hosts(sender, instance, created, **kwargs):
         updated_hostname = f"{instance.subdomain_prefix}.{vm_url_without_https}"
         
         # Update /etc/hosts to add the new tenant's domain or subdomain
-        add_command = f"echo '172.17.0.2 {updated_hostname}' | sudo tee -a /etc/hosts"
+        add_command = f"echo '0.0.0.0 {updated_hostname}' | sudo tee -a /etc/hosts"
         subprocess.run(add_command, shell=True)
 
 
