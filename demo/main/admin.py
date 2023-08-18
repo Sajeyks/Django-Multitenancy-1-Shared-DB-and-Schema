@@ -4,6 +4,8 @@ from .utils import tenant_from_request
 # Register your models here.
 
 class customerAdmin(admin.ModelAdmin):
+    exclude = ('tenant',)
+    
     def get_queryset(self, request, *args, **kwargs):
         queryset = super().get_queryset(request, *args, **kwargs)
         tenant = tenant_from_request(request)
@@ -17,6 +19,9 @@ class customerAdmin(admin.ModelAdmin):
         
 
 class rocketAdmin(admin.ModelAdmin):
+    exclude = ('tenant',)
+
+    
     def get_queryset(self, request, *args, **kwargs):
         queryset = super().get_queryset(request, *args, **kwargs)
         tenant = tenant_from_request(request)
@@ -30,6 +35,9 @@ class rocketAdmin(admin.ModelAdmin):
         
 
 class payloadAdmin(admin.ModelAdmin):
+    exclude = ('tenant',)
+
+    
     def get_queryset(self, request, *args, **kwargs):
         queryset = super().get_queryset(request, *args, **kwargs)
         tenant = tenant_from_request(request)
@@ -43,6 +51,9 @@ class payloadAdmin(admin.ModelAdmin):
 
 
 class launchAdmin(admin.ModelAdmin):
+    exclude = ('tenant',)
+    
+    
     def get_queryset(self, request, *args, **kwargs):
         queryset = super().get_queryset(request, *args, **kwargs)
         tenant = tenant_from_request(request)
