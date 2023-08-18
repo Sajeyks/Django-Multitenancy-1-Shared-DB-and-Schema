@@ -28,7 +28,7 @@ DEBUG = True
 vm_url_without_https = '{{EDUCATIVE_LIVE_VM_URL}}'.replace('https://', '')
 
 
-ALLOWED_HOSTS = [vm_url_without_https, f'.{vm_url_without_https}']
+ALLOWED_HOSTS = [vm_url_without_https, f'.{vm_url_without_https}', 'localhost']
 
 
 # Application definition
