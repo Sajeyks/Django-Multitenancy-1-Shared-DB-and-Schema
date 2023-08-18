@@ -5,19 +5,19 @@ class customerSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = customer
-        fields = '__all__'
+        exclude = ('tenant',)
         
 class rocketSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = rocket
-        fields = '__all__'
+        exclude = ('tenant',)
         
 class payloadSerializer(serializers.HyperlinkedModelSerializer):
     
     class Meta:
         model = payload
-        fields = '__all__'
+        exclude = ('tenant',)
         
 class launchSerializer(serializers.HyperlinkedModelSerializer):
     
@@ -25,4 +25,4 @@ class launchSerializer(serializers.HyperlinkedModelSerializer):
     
     class Meta:
         model = launch
-        fields = '__all__'
+        exclude = ('tenant',)
