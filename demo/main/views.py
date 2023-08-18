@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from .models import customer, rocket, payload, launch
 from .serializers import customerSerializer, rocketSerializer, payloadSerializer, launchSerializer
-from demo.main.utils import tenant_from_request  
+from .utils import tenant_from_request  
 # Create your views here.
 
 
