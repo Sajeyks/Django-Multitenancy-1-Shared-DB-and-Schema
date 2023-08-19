@@ -9,7 +9,12 @@ class customerAdmin(admin.ModelAdmin):
     def get_queryset(self, request, *args, **kwargs):
         queryset = super().get_queryset(request, *args, **kwargs)
         tenant = tenant_from_request(request)
-        queryset = queryset.filter(tenant=tenant)
+        
+        if tenant is None:
+            queryset = queryset.filter(tenant__isnull=True)
+        else:
+            queryset = queryset.filter(tenant=tenant)
+            
         return queryset
     
     def save_model(self, request, obj, form, change):
@@ -25,7 +30,12 @@ class rocketAdmin(admin.ModelAdmin):
     def get_queryset(self, request, *args, **kwargs):
         queryset = super().get_queryset(request, *args, **kwargs)
         tenant = tenant_from_request(request)
-        queryset = queryset.filter(tenant=tenant)
+        
+        if tenant is None:
+            queryset = queryset.filter(tenant__isnull=True)
+        else:
+            queryset = queryset.filter(tenant=tenant)
+            
         return queryset
     
     def save_model(self, request, obj, form, change):
@@ -41,7 +51,12 @@ class payloadAdmin(admin.ModelAdmin):
     def get_queryset(self, request, *args, **kwargs):
         queryset = super().get_queryset(request, *args, **kwargs)
         tenant = tenant_from_request(request)
-        queryset = queryset.filter(tenant=tenant)
+        
+        if tenant is None:
+            queryset = queryset.filter(tenant__isnull=True)
+        else:
+            queryset = queryset.filter(tenant=tenant)
+            
         return queryset
     
     def save_model(self, request, obj, form, change):
@@ -57,7 +72,12 @@ class launchAdmin(admin.ModelAdmin):
     def get_queryset(self, request, *args, **kwargs):
         queryset = super().get_queryset(request, *args, **kwargs)
         tenant = tenant_from_request(request)
-        queryset = queryset.filter(tenant=tenant)
+        
+        if tenant is None:
+            queryset = queryset.filter(tenant__isnull=True)
+        else:
+            queryset = queryset.filter(tenant=tenant)
+            
         return queryset
     
     def save_model(self, request, obj, form, change):
