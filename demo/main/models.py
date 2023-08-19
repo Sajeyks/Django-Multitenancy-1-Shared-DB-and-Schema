@@ -16,7 +16,7 @@ class Tenant(models.Model):
 
 
 class TenantCentricModel(models.Model):
-    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, null=True)
 
     class Meta:
         abstract = True
