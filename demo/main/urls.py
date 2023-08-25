@@ -1,6 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from .views import customerViewSet, rocketViewSet, payloadViewSet, launchViewSet
+from .views import api_root
 
 router = DefaultRouter()
 
@@ -12,4 +13,5 @@ router.register(r'launch', launchViewSet, basename='launch')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('', api_root, name='api-root'),
  ]
