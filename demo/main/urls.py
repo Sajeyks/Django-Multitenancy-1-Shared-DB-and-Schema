@@ -12,6 +12,6 @@ router.register(r'launch', launchViewSet, basename='launch')
 
 
 urlpatterns = [
-    path('', include(router.urls)),
     path('', api_root, name='api-root'),
+    path('', include(router.urls)),
  ]
